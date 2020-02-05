@@ -1,0 +1,9 @@
+{% if latest_question_list %}
+	{% for q in latest_question_list %}
+		<pre><a href="{% url 'polls:detail' q.id %}">{{ q.question_text }}</a></pre>
+		<strong>{{ q.pub_date }}</strong>
+		<em>{{ q.choice_set.all }}</em>
+	{% endfor %}
+{% else %}
+	<b>No Questions available</b>
+{% endif %}
