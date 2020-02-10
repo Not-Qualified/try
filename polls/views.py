@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -10,13 +11,19 @@ class HomeView(generic.ListView):
 	context_object_name = "latest_question_list"
 
 	def get_queryset(self):
-		""" Returns the last five published question """
-		return Question.objects.order_by("-pub_date")[:5]
+		""" Returns the last five published question
+		Also that Only Question of Past not of Future Date """
+		return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
 
 
 class DetailView(generic.DetailView):
 	model = Question
 	template_name = "polls/detail.html"
+
+	def get_queryset(self):
+		"""Exluding Question's of Future from Query of List Object """
+
+		return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultView(generic.DetailView):

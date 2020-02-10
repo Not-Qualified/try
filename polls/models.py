@@ -12,6 +12,10 @@ class Question(models.Model):
 		one_day_delta = datetime.timedelta(days=1)
 		return ( current - one_day_delta <= self.pub_date <= current )
 
+	was_published_recently.admin_order_field = "pub_date"
+	was_published_recently.boolean = True
+	was_published_recently.short_description = "Published Recently ?"
+
 
 	def __str__(self):
 		return f"{self.question_text}"
